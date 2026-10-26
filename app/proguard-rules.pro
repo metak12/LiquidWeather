@@ -1,0 +1,4 @@
+-keepattributes *Annotation*, InnerClasses
+-dontnote kotlinx.serialization.AnnotationsKt
+-keepclassmembers class com.example.liquidweather.data.api.** { *; }
+-keep @kotlinx.serialization.Serializable class ** { *; }
