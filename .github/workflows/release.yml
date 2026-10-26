@@ -3,7 +3,7 @@ name: Build and Release APK
 on:
   push:
     tags:
-      - 'v*' # Срабатывает при создании любого тега, начинающегося с 'v' (например, v1.0.0)
+      - 'v*' # Срабатывает при создании тега, начинающегося с 'v' (например, v1.0.1)
 
 jobs:
   release:
@@ -27,7 +27,7 @@ jobs:
       - name: 🔨 Сборка Release APK
         run: |
           chmod +x ./gradlew
-          ./gradlew assembleRelease --no-daemon
+          ./gradlew :app:assembleRelease --no-daemon
 
       - name: 🚀 Создание релиза и загрузка APK
         uses: softprops/action-gh-release@v1
