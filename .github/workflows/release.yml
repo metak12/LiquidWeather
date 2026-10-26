@@ -1,0 +1,39 @@
+name: Build and Release APK
+
+on:
+  push:
+    tags:
+      - 'v*' # Срабатывает при создании любого тега, начинающегося с 'v' (например, v1.0.0)
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Необходимо для создания релиза и загрузки файлов
+
+    steps:
+      - name: 📥 Checkout репозитория
+        uses: actions/checkout@v4
+
+      - name: ☕ Установка Java 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: 📦 Настройка Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: 🔨 Сборка Release APK
+        run: |
+          chmod +x ./gradlew
+          ./gradlew assembleRelease --no-daemon
+
+      - name: 🚀 Создание релиза и загрузка APK
+        uses: softprops/action-gh-release@v1
+        with:
+          files: app/build/outputs/apk/release/*.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
